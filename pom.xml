@@ -11,6 +11,5 @@
   <modules>
     <module>fitness_reservation-web</module>
     <module>fitness_reservation-core</module>
-    <module>spring-security</module>
   </modules>
 </project>
