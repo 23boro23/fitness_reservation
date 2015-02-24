@@ -1,5 +1,6 @@
 package cz.marek_b.fitness_reservation.service;
 
+import cz.marek_b.fitness_reservation.bean.GymClassBean;
 import cz.marek_b.fitness_reservation.core.dao.GymClassDao;
 import cz.marek_b.fitness_reservation.core.dao.GymDao;
 import cz.marek_b.fitness_reservation.core.dao.TrainerDao;
@@ -8,9 +9,10 @@ import cz.marek_b.fitness_reservation.core.util.DateFormatter;
 import cz.marek_b.fitness_reservation.web.form.bean.GymClassFormBean;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,43 +40,29 @@ public class GymClassServiceImpl implements GymClassService {
     }
 
     @Override
-    public List<GymClass> findAll(Date dateStart) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dateStart);
-        cal.add(Calendar.DATE, 7);
+    public List<GymClassBean> findAll(Date dateStart) {
+        final GymClassBean gc1 = new GymClassBean(1L, "24.02.2015 14:00", 4);
+        //final GymClassBean gc2 = new GymClassBean(2L, "24.02.2015 14:00", 4);
+        //final GymClassBean gc3 = new GymClassBean(3L, "24.02.2015 14:00", 4);
+        //final GymClassBean gc4 = new GymClassBean(4L, "24.02.2015 14:00", 4);
         
-        //return gymClassDao.findAll(dateStart, cal.getTime());
+        return new ArrayList<GymClassBean>() {{
+            add(gc1); //add(gc2); add(gc3); add(gc4);
+        }};
+    }
+
+    @Override
+    public Map<String, GymClassBean> findAll2(Date dateStart) {
+        final GymClassBean gc1 = new GymClassBean(1L, "24.02.2015 14:00", 4);
+        final GymClassBean gc2 = new GymClassBean(2L, "24.02.2015 18:00", 8);
+        final GymClassBean gc3 = new GymClassBean(3L, "25.02.2015 07:00", 6);
+        final GymClassBean gc4 = new GymClassBean(4L, "26.02.2015 10:00", 4);
         
-        Calendar cal1 = Calendar.getInstance();
-        cal1.set(Calendar.YEAR, 2015);
-        cal1.set(Calendar.MONTH, 1);
-        cal1.set(Calendar.DAY_OF_MONTH, 10);
-        cal1.set(Calendar.HOUR_OF_DAY, 7);
-        cal1.set(Calendar.MINUTE, 00);
-        
-        Calendar cal2 = Calendar.getInstance();
-        cal2.set(Calendar.YEAR, 2015);
-        cal2.set(Calendar.MONTH, 1);
-        cal2.set(Calendar.DAY_OF_MONTH, 10);
-        cal2.set(Calendar.HOUR_OF_DAY, 11);
-        cal2.set(Calendar.MINUTE, 15);
-        
-        final GymClass gc1 = new GymClass();
-        gc1.setId(1L);
-        gc1.setCapacity(10);
-        gc1.setStart(cal1.getTime());
-        cal1.add(Calendar.HOUR, 1);
-        gc1.setEnd(cal1.getTime());
-        
-        final GymClass gc2 = new GymClass();
-        gc2.setId(2L);
-        gc2.setCapacity(20);
-        gc2.setStart(cal2.getTime());
-        cal2.add(Calendar.HOUR, 2);
-        gc2.setEnd(cal2.getTime());
-        
-        return new ArrayList<GymClass>() {{
-            add(gc1); add(gc2);
+        return new HashMap<String, GymClassBean>() {{
+            put(gc1.getStart(), gc1);
+            put(gc2.getStart(), gc2);
+            put(gc3.getStart(), gc3);
+            put(gc4.getStart(), gc4);
         }};
     }
 

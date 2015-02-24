@@ -6,5 +6,6 @@ import java.util.List;
 public interface TimetableService {
     
     public List<String> getWeek(Date start);
+    public List<String> getTimes(int start, int end);
     
 }

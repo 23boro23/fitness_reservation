@@ -34,5 +34,20 @@ public class TimetableServiceImpl implements TimetableService {
         
         return ret;
     }
+
+    @Override
+    //TODO refactor
+    public List<String> getTimes(int start, int end) {
+        List<String> ret = new ArrayList<>((end - start) * 4);
+        
+        for (int i=start; i<=end; i++) {
+            ret.add((i < 10 ? ("0" + i) : i) + ":00");
+            ret.add((i < 10 ? ("0" + i) : i) + ":15");
+            ret.add((i < 10 ? ("0" + i) : i) + ":30");
+            ret.add((i < 10 ? ("0" + i) : i) + ":45");
+        }
+        
+        return ret;
+    }
     
 }

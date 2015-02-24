@@ -1,6 +1,6 @@
 package cz.marek_b.fitness_reservation.web.controller;
 
-import cz.marek_b.fitness_reservation.core.data.GymClass;
+import cz.marek_b.fitness_reservation.bean.GymClassBean;
 import cz.marek_b.fitness_reservation.service.GymClassService;
 import cz.marek_b.fitness_reservation.service.TimetableService;
 import java.util.Date;
@@ -22,11 +22,11 @@ public class TimetableController {
     
     @RequestMapping(method = RequestMethod.GET)
     public String page(Model model) {
-        model.addAttribute("startTime", 6);
-        model.addAttribute("endTime", 22);
+        model.addAttribute("times", timetableService.getTimes(6, 22));
         model.addAttribute("dates", timetableService.getWeek(new Date()));
-        List<GymClass> gymClassList = gymClassService.findAll(new Date());
-        model.addAttribute("classes", gymClassList);
+        List<GymClassBean> gymClassList = gymClassService.findAll(new Date());
+        //model.addAttribute("classes", gymClassList);
+        model.addAttribute("classes", gymClassService.findAll2(new Date()));
         
         return "timetable";
     }
