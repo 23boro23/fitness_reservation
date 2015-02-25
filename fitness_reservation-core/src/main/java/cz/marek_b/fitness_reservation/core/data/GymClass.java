@@ -1,6 +1,8 @@
 package cz.marek_b.fitness_reservation.core.data;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,6 +53,10 @@ public class GymClass implements Serializable {
     public Date getStart() {
         return start;
     }
+    
+    public String getStartFormatted() {
+        return new SimpleDateFormat("dd.MM.yyyy HH:mm").format(start);
+    }
 
     public void setStart(Date start) {
         this.start = start;
@@ -94,6 +100,21 @@ public class GymClass implements Serializable {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+    
+    public int getClassLength() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(start);
+        
+        int len = 0;
+        
+        while (cal.getTime().before(end)) {
+            cal.add(Calendar.MINUTE, 15);
+            len++;
+        }
+        
+        return len;
+        
     }
 
 }

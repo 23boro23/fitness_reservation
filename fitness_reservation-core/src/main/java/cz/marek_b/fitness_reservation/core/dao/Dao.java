@@ -4,8 +4,12 @@ import cz.marek_b.fitness_reservation.core.aspect.Loggable;
 import java.lang.reflect.ParameterizedType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public abstract class Dao<E, PK> implements GenericDao<E, PK>  {
+    
+    private static final Log LOG = LogFactory.getLog(Dao.class);
 
     @PersistenceContext(unitName = "fitness-reservation-pu")
     protected EntityManager em;
@@ -14,7 +18,7 @@ public abstract class Dao<E, PK> implements GenericDao<E, PK>  {
     
     public Dao() {
         ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
-        this.entityClass = (Class<E>) genericSuperclass.getActualTypeArguments()[1];        
+        this.entityClass = (Class<E>) genericSuperclass.getActualTypeArguments()[0];        
     }
     
     @Override
@@ -40,7 +44,7 @@ public abstract class Dao<E, PK> implements GenericDao<E, PK>  {
     }
 
     @Override
-    public E findById(PK pk) {        
+    public E findById(PK pk) {   
        return em.find(entityClass, pk);
     }
     

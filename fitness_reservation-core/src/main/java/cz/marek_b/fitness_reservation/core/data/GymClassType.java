@@ -20,7 +20,7 @@ public class GymClassType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
-    @Column(name = "class_name")
+    @Column(name = "class_name", length = 50)
     private String className;
     @Column(name = "class_color", length = 7)
     private String classColor;

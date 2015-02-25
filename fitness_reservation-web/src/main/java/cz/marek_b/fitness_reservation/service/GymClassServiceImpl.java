@@ -1,14 +1,14 @@
 package cz.marek_b.fitness_reservation.service;
 
-import cz.marek_b.fitness_reservation.bean.GymClassBean;
 import cz.marek_b.fitness_reservation.core.dao.GymClassDao;
+import cz.marek_b.fitness_reservation.core.dao.GymClassTypeDao;
 import cz.marek_b.fitness_reservation.core.dao.GymDao;
 import cz.marek_b.fitness_reservation.core.dao.TrainerDao;
 import cz.marek_b.fitness_reservation.core.data.GymClass;
 import cz.marek_b.fitness_reservation.core.util.DateFormatter;
 import cz.marek_b.fitness_reservation.web.form.bean.GymClassFormBean;
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +26,8 @@ public class GymClassServiceImpl implements GymClassService {
     private TrainerDao trainerDao;
     @Autowired
     private GymDao gymDao;
+    @Autowired
+    private GymClassTypeDao gymClassTypeDao;
 
     @Override
     @Transactional
@@ -35,35 +37,27 @@ public class GymClassServiceImpl implements GymClassService {
         gymClass.setEnd(DateFormatter.getDateTime(gymClassFormBean.getEnd()));
         gymClass.setTrainer(trainerDao.findById(gymClassFormBean.getTrainer()));
         gymClass.setGym(gymDao.findById(gymClassFormBean.getGym()));
+        gymClass.setClassType(gymClassTypeDao.findById(gymClassFormBean.getClassType()));
 
         gymClassDao.create(gymClass);
     }
-
+    
     @Override
-    public List<GymClassBean> findAll(Date dateStart) {
-        final GymClassBean gc1 = new GymClassBean(1L, "24.02.2015 14:00", 4);
-        //final GymClassBean gc2 = new GymClassBean(2L, "24.02.2015 14:00", 4);
-        //final GymClassBean gc3 = new GymClassBean(3L, "24.02.2015 14:00", 4);
-        //final GymClassBean gc4 = new GymClassBean(4L, "24.02.2015 14:00", 4);
+    public Map<String, GymClass> findAll(Date dateStart) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateStart);
+        cal.add(Calendar.DATE, 7);
+        Date dateEnd = cal.getTime();
+        //final GymClass gc1 = new GymClass(1L, "24.02.2015 14:00", 4);
         
-        return new ArrayList<GymClassBean>() {{
-            add(gc1); //add(gc2); add(gc3); add(gc4);
-        }};
-    }
-
-    @Override
-    public Map<String, GymClassBean> findAll2(Date dateStart) {
-        final GymClassBean gc1 = new GymClassBean(1L, "24.02.2015 14:00", 4);
-        final GymClassBean gc2 = new GymClassBean(2L, "24.02.2015 18:00", 8);
-        final GymClassBean gc3 = new GymClassBean(3L, "25.02.2015 07:00", 6);
-        final GymClassBean gc4 = new GymClassBean(4L, "26.02.2015 10:00", 4);
+        List<GymClass> classes = gymClassDao.findAll(dateStart, dateEnd);
+        Map<String, GymClass> ret = new HashMap<>(classes.size());
         
-        return new HashMap<String, GymClassBean>() {{
-            put(gc1.getStart(), gc1);
-            put(gc2.getStart(), gc2);
-            put(gc3.getStart(), gc3);
-            put(gc4.getStart(), gc4);
-        }};
+        for (GymClass c : classes) {
+            ret.put(c.getStartFormatted(), c);
+        }
+        
+        return ret;
     }
 
 }

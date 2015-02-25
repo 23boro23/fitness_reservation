@@ -1,6 +1,7 @@
 package cz.marek_b.fitness_reservation.web.controller;
 
 import cz.marek_b.fitness_reservation.service.GymClassService;
+import cz.marek_b.fitness_reservation.service.GymClassTypeService;
 import cz.marek_b.fitness_reservation.service.GymService;
 import cz.marek_b.fitness_reservation.service.TrainerService;
 import cz.marek_b.fitness_reservation.web.form.bean.GymClassFormBean;
@@ -23,12 +24,15 @@ public class GymClassController {
     private TrainerService trainerService;
     @Autowired
     private GymService gymService;
+    @Autowired
+    private GymClassTypeService gymClassTypeService;
  
     @RequestMapping(method = RequestMethod.GET)
     public String gymClassPage(Model model) {
         model.addAttribute("gymClassFormBean", new GymClassFormBean());
         model.addAttribute("trainers", trainerService.findAllTrainers());
         model.addAttribute("gyms", gymService.findAll());
+        model.addAttribute("classTypes", gymClassTypeService.findAll());
         
         return "admin/create_class";
     }

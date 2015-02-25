@@ -14,7 +14,7 @@ public class SettingsController {
     
     @RequestMapping(method = RequestMethod.GET)
     public String page() {
-        return "admin/opening_hrs";
+        return "admin/settings";
     }
     
     @RequestMapping(method = RequestMethod.POST)

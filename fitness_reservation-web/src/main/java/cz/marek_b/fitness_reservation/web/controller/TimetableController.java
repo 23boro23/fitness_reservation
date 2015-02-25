@@ -1,10 +1,9 @@
 package cz.marek_b.fitness_reservation.web.controller;
 
-import cz.marek_b.fitness_reservation.bean.GymClassBean;
 import cz.marek_b.fitness_reservation.service.GymClassService;
 import cz.marek_b.fitness_reservation.service.TimetableService;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,9 +23,8 @@ public class TimetableController {
     public String page(Model model) {
         model.addAttribute("times", timetableService.getTimes(6, 22));
         model.addAttribute("dates", timetableService.getWeek(new Date()));
-        List<GymClassBean> gymClassList = gymClassService.findAll(new Date());
-        //model.addAttribute("classes", gymClassList);
-        model.addAttribute("classes", gymClassService.findAll2(new Date()));
+        Map c = gymClassService.findAll(new Date());
+        model.addAttribute("classes", gymClassService.findAll(new Date()));
         
         return "timetable";
     }

@@ -14,6 +14,7 @@ public class GymClassFormBean implements Serializable {
     private String end;
     private long trainer;
     private long gym;
+    private long classType;
 
     public String getStart() {
         return start;
@@ -47,12 +48,22 @@ public class GymClassFormBean implements Serializable {
         this.gym = gym;
     }
 
+    public long getClassType() {
+        return classType;
+    }
+
+    public void setClassType(long classType) {
+        this.classType = classType;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.start);
-        hash = 97 * hash + Objects.hashCode(this.end);
-        hash = 97 * hash + Objects.hashCode(this.trainer);
+        int hash = 5;
+        hash = 41 * hash + Objects.hashCode(this.start);
+        hash = 41 * hash + Objects.hashCode(this.end);
+        hash = 41 * hash + (int) (this.trainer ^ (this.trainer >>> 32));
+        hash = 41 * hash + (int) (this.gym ^ (this.gym >>> 32));
+        hash = 41 * hash + (int) (this.classType ^ (this.classType >>> 32));
         return hash;
     }
 
@@ -71,10 +82,18 @@ public class GymClassFormBean implements Serializable {
         if (!Objects.equals(this.end, other.end)) {
             return false;
         }
-        if (!Objects.equals(this.trainer, other.trainer)) {
+        if (this.trainer != other.trainer) {
+            return false;
+        }
+        if (this.gym != other.gym) {
+            return false;
+        }
+        if (this.classType != other.classType) {
             return false;
         }
         return true;
     }
+
+    
 
 }
